@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>객체 prototype set</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+        function Parent() {
+            if(this.constructor !== Parent) new Parent(); // new 를 안쓴경우 대비로 constructor 비교
+        }
+        Parent.prototype.a = [1];
+        Parent.prototype.f = function () {
+            this.a.push(this.a.length+1);
+        }
+        function Child(aa,bb) {
+            if(this.constructor !== Child) new Child();
+            this.aa = aa;
+            this.bb = bb;
+        }
+        Child.prototype = new Parent();
+        Child.prototype.f = function () {
+            this.a.push(this.a.length * 2);
+        }
+        Child.prototype.constructor = Child; // Child.prototype = new Parent(); 사용하면 constructor를 잃어 버려서 다시 지정.
+        var p = new Parent();
+        var c = new Child();
+        p.f();
+        c.f();
+        console.log(p.a);
+        console.log(c.a);
+	</script>
+
+	<script>
+        function Child() {};
+        Child.prototype.c = {};
+        var c1 = new Child();
+        var c2 = new Child();
+
+        Child.prototype.a = true; // 체인의 원본을 변경, 추가하고 싶을때 다른 참조하는것들도 영향을 미침. 권장하지 않는다~
+
+        c1.a;
+        c2.a;
+
+        Object.prototype.b = true; // 위와 같은 결과 (Child.prototype.a = true)
+        c1.b;
+        c2.b;
+        ({}).b; // Object.prototype.b = true; // 결과
+
+		Child.prototype = {
+		    c: {} // Child.prototype.c = {}; 선언을 변경.
+		}
+		var c3 = new Child(); // new 시점에 새로운 객체 생성
+		c1.c === c3.c // false
+	</script>
+
+</head>
+<body>
+<h1>prototype : new, get, set</h1>
+<p>set이 이후 버전에는 prototype체인을 따라서 Descriptor을 가져와서 쓰기 가능 여부가 되어야 합니다.</p>
+<p>모든 객체에 특정 속성을 추가하고 싶다면 object.prototype을 통해 추가</p>
+<p>object.prototype를 통해 속성을 추가하고 new를 한뒤에 object.prototype을 변경한뒤 또 new를 하면 두개의 체인이 서로 달라진다. </p>
+
+</body>
+</html>

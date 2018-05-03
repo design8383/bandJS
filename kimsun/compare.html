@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>==, === 어떻게 동작하는가</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+		undefined == null // true
+		0 == '0' // true
+		true == '1' // true
+		[2,3] == '2,3' // valueOf() -> toString() // true
+	</script>
+</head>
+<body>
+	<h1>==, === 어떻게 동작하는가</h1>
+	<h2>기본형, 참조형</h2>
+	<dl>
+		<dt>기본형 : </dt>
+		<dd>string, number, boolean, undefined, null, symbol (타입과 값 체크)</dd>
+		<dd></dd>
+		<dd></dd>
+	</dl>
+	<dl>
+		<dt>참조형 :</dt>
+		<dd>[], {} 그외에 기본형 제외 모두 (레퍼런스 체크)</dd>
+		<dd>[1,2] === [1,2] // false</dd>
+		<dd></dd>
+	</dl>
+	<dl>
+		<dt>== 동치</dt>
+		<dd>일치 < 동치 (일치 하면 동치는 참. 동치 안에 일치가 포함된다.) </dd>
+		<dd>null == undefined //true </dd>
+		<dd> 0 == '0' // true (문자를 숫자로 바꿈. 0 === 0)</dd>
+		<dd>true == '1' // true (문자를 숫자로 바꿈. true = 1 ,  false = 0   ->  1 === 1)</dd>
+		<dd>참조형과 참조형은 일치와 동일하다. (참조형끼리의 비교는 무의미)</dd>
+		<dd>참조형을 기본형으로 변경 (valueOf -> toString)
+			<dl>
+				<dt>참조형과 기본형을 비교 [2,3] == '2,3' // valueOf()</dt>
+				<dd>참조형 [2,3].valueOf() 수행하면 자기 자신 [2,3]</dd>
+				<dd>기본형이 아닌경우는 다시 toString() -> 2,3</dd>
+				<dd>[2,3] == '2,3' // 2,3 == '2,3' 비교 true</dd>
+			</dl>
+		</dd>
+		<dd>두 피연산자의 기본형 타입이 다르다면 숫자로 변환 후 일치 여부 확인</dd>
+	</dl>
+	<p>동등 == 이 참이 경우 : 일치하면~~, undefined, null, 참조형은 같은 객체를 참조해야한다. 타입이 같다면 값이 같아야한다. 타입이 다르다 숫자로 변경하고 일치 비교한다. </p>
+</body>
+</html>

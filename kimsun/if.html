@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>if / for</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+		0 === -0 // true
+		// 1/0 을 하면 무한, 1/-0은 -무한 으로 나온다.
+
+		if(true)
+		    if(false)
+		        console.log(1);
+
+		 else
+		    console.log(2);
+		// 위 결과 값은 2를 출력한다.
+		// 들여 쓰기에 속으면 안된다. else는 false 경우의 else를 이야기한다.
+        if(true){
+            if(false){
+                console.log(1);
+            }else {
+                console.log(2);
+            }
+        }
+	</script>
+	<script>
+		// for (선언문 또는 표현식; 표현식; 표현식) 문장
+		var a = [1,2,3];
+        for (var i = 0; i<a.length; i++) a[i] = 0;
+        for (var i = 0; i<a.length; a[i++] = 0); // 위 문장과 같은 문장이다.
+	</script>
+
+
+</head>
+<body>
+<h1>if</h1>
+<dl>
+	<dt>false 는 어떤것들이 있나?</dt>
+	<dd>0, -0, null, false, NaN, undefined, ''</dd>
+	<dd>위 false 경우 외에는 모두 true</dd>
+</dl>
+
+
+<h3><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements">항목별 문 및 선언</a></h3>
+</body>
+</html>

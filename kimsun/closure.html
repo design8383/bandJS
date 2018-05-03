@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>클로저</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+	function closure(start) {
+		return function count() {
+			return {
+			    inc: function () {
+				    start++;
+                },
+                get: function () {
+	              return start;
+                }
+			}
+        }
+    }
+    var f1 = closure(0);
+	var f2 = f1;
+	var f3 = closure(0);
+	</script>
+
+	<script>
+        var x = 1;
+        function innerF() {
+	        return 1 + x; // x = 1 (어휘적 유효 범위로 정의 된것)
+        }
+        function outterF() {
+	        var x = 2;
+	        return innerF();
+        }
+        console.log(outterF()); // 2
+	</script>
+
+	<script>
+		function a() {
+			var i = 0;
+			function b() {
+				var i = 1;
+				function c() {
+					console.log(i);
+                }
+                c();
+            }
+            b();
+        }
+        a(); // 1
+	</script>
+
+	<script>
+        function fn(x) {
+	        return function inner() {return x}
+        }
+        var f1 = fn(1);
+        var f2 = fn(2);
+
+        console.log(f1()); // 1
+        console.log(f2()); // 2
+	</script>
+</head>
+<body>
+<h1>closure</h1>
+<p>어휘적 스코프(함수 정의) <-> 동적 스코프(함수실행 범위) (서로 반대말)</p>
+<dl>
+	<dt>스코프</dt>
+	<dd>어휘적 유효범위</dd>
+	<dd>최상위는 전역객체</dd>
+	<dd>함수 선언, catch</dd>
+	<dd>중첩 스코프 가능</dd>
+</dl>
+함수를 테이터로 사용할수 있다.
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

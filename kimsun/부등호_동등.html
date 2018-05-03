@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>부등호, 동등, 더하기</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+		// 이중 거짓은?
+		true > false  // 1 > 0
+		'true' > 'false' // t > f
+		true > 'false' // 1 > NaN : NaN 과 비교하면 무조건 거짓!!
+		// 문자가 아닌경우 숫자로 변경
+	</script>
+
+	<script>
+        // 더하기 문제
+		[] + []; // ''
+		[] + {}; // '' + [object object] = [object object]
+        {} + {}; // {}는 블럭 또는 객체로 해석이 가능하다.  객체 경우 : [object object][object object] / 블록 경우 : NaN
+        {} + []; // [object object] + '' = 객체 경우 : [object object] / 블럭 경우 : ''-> 0 = 0
+	</script>
+
+</head>
+<body>
+<h1>부등호, 동등, 더하기</h1>
+<h2>부등호</h2>
+<ol>
+	<li>참조형 타입을 기본형으로 변경</li>
+	<li>두 피연산자가 문자열이라면 문자열 비교 'a' < 'b'</li>
+	<li>그렇지 않다면 숫자로 변경 후 비교</li>
+</ol>
+<p>x <= y 이면 x < y 이거나 x = y이어야 한다. (수학)</p>
+
+<p>x = 0 , y = null 이라면 x <= y ( 0 <= 0 )  이지만 x < y 와 x = y가 거짓일 수 있다 (자바스크립트)</p>
+
+<dl>
+	<dt>더하기 연산자</dt>
+	<dd>참조형은 기본형으로</dd>
+	<dd>피 연산자 둘중 하나가 문자열이라면</dd>
+	<dd>문자 더하기를 진행</dd>
+	<dd>그렇지 않다면 두 값을 문자로 변경하여 더하기를 진행</dd>
+</dl>
+<p>동등 == 이 참이 경우 : 일치하면~~, undefined, null, 참조형은 같은 객체를 참조해야한다. 타입이 같다면 값이 같아야한다. 타입이 다르다 숫자로 변경하고 일치 비교한다. </p>
+</body>
+</html>

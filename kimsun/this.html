@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>this</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+		//자바에서 객체는 자신의 오브젝트를 가리킨다.
+		console.log(this); // window 또는 node 면 global 이 나온다.
+		function a() {
+			this(); // window 또는 node 면 global 이 나온다.
+        }
+
+        function b() {
+            b = 1; // 변수 테이블에 b가 없기 때문에 글로별 변수테이블에 할당
+        } fn(); console.log(this.b); // 1 출력
+
+		var obj = {
+		    a: 1,
+			fn() {
+		        console.log(this.a);
+			}
+		}
+		obj.fn(); // 1 출력
+
+
+        var obj = {
+            a: 1,
+            fn() {
+                console.log(this.a);
+            }
+        }
+        var fn = obj.fn();
+        fn(); // undefined
+	</script>
+
+	<script>
+        var obj = {
+            a: console.log(this), // 1. obj.a = console.log(this) // 글로벌 window
+	        fn: function () { // obj.fn() 실행해야지 해당 블록에 진입
+		        console.log(this); // 2. fn() 실행 앞에 있는 obj 가 this로 바인딩 된다.
+		        function fn() {
+			        console.log(this); // 3. 즉시 실행함수는 실행 앞에 . 가 없기 때문에 this는 글로벌 window.
+                }
+                fn()
+            }
+        }
+        obj.fn();
+        // console.log()가 다르게 출력되는것은 2번째.
+	</script>
+
+	<script>
+        var obj = {
+            fn: function () {
+	            console.log(this); // window
+            }
+        }
+        setTimeout(obj.fn, 100);
+        // var t = obj.fn
+		// setTimeout(t, 100);
+		// 위와 같이 바꿀 수 있기 때문에 t의 this는 window이다.
+	</script>
+</head>
+<body>
+<h1>this</h1>
+<dl>
+	<dt>오해 : 오류</dt>
+	<dd>자기 자신을 가리킨다.</dd>
+	<dd>스코프를 가리킨다.</dd>
+</dl>
+<strong>this는 인터프리터 시점이 아닌 실행 시점에 만들어진다.</strong>
+<p>변수테이블이 비어 있으면 this와 argument를 채워 넣는다. 이때 무슨 값으로 this를 채우는지가 중요~~ <strong>obj.fn() 경우 실행 바로 앞에 있는 (.) 컴마 앞의 obj가 this 이다.</strong></p>
+
+<h2>this를 바꾸는 방법</h2>
+<ul>
+	<li>call : 첫번째 인수가 this, 두번째 인수는 배열을 받는다. </li>
+	<li>apply : 첫번째 인수가 this, 두번째 인수는 배열을 받는다. </li>
+	<li>bind : this가 바인딩 된 함수를 반환한다.</li>
+</ul>
+
+</body>
+</html>
