@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>promise</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+        aa : function() {
+            var pp = $.Deferred();  // 비동기 준비
+
+            setTimeout(function() {
+                pp.resolve(3);  // pp의 프로미스가 완료되면~~
+                alert(2);  // 3번째로 2출력
+            }, 1000);
+
+            return pp;  // pp.promise() 랑 같음.
+        },
+
+        bb : function() {
+            var promise = this.aa();
+
+            promise.then(function(ccc) {  // ccc 는 프모미스 완료된 3을 받아옴.
+                alert(ccc);  // 1번째로 3출력
+
+                return $.Deferred().resolve(6);
+            })
+            .then(function(kk) {  // bb() 를 리던 받아 프로미스 완료된 6을 kk에 넣는다.
+                alert(kk); // 2번째로 6출력
+            })
+        }
+        bb();
+	</script>
+
+	<script>
+        // then()의 두 번째 인자로는 감지하지 못하는 오류
+        function getData() {
+            return new Promise(function (resolve, reject) {
+                resolve('hi');
+            });
+        }
+
+        getData().then(function (result) {
+            console.log(result);
+            throw new Error("Error in then()"); // Uncaught (in promise) Error: Error in then()
+        }, function (err) {
+            console.log('then error : ', err);
+        });
+        /*
+        getData() 함수의 프로미스에서 resolve() 메서드를 호출하여 정상적으로 로직을 처리했지만,
+        then()의 첫 번째 콜백 함수 내부에서 오류가 나는 경우 오류를 제대로 잡아내지 못합니다.
+        따라서 코드를 실행하면 아래와 같은 오류가 납니다.
+         */
+	</script>
+</head>
+<body>
+<h1>promise</h1>
+<p>비동기화 콜백함수를 알아야한다.</p>
+<h2>가급적 에러 처리는 catch()로 한다.</h2>
+<a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/">참고</a>
+</body>
+</html>
