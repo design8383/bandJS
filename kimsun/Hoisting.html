@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Hoisting</title>
+	<title>Hoisting 실행 콘텍스트(특히 생성 및 실행 단계)가 어떻게 동작하는가</title>
 	<style>
 		body{font-size:13px}
 		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
@@ -44,7 +44,7 @@
 	</script>
 </head>
 <body>
-<h1>Hoisting</h1>
+<h1>Hoisting 이란? 실행 콘텍스트(특히 생성 및 실행 단계)가 동작</h1>
 <pre>
 	a = 2;
 	var a;
@@ -56,6 +56,5 @@
 	<dd>var a 는 인터프리터 시점에서 변수 테이틀 생성 - > a 변수 추가 -> a = 2는 실행 시점에서 수행~~ 변수 테이블에서 a를 찾고 2를 추가한다.</dd>
 	<dd>함수라면 함수안에 변수 테이블 생성</dd>
 </dl>
-
 </body>
 </html>
