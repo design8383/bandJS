@@ -25,7 +25,7 @@
 			var a = 'bbb';
 			console.log(a); // 1  - 'bbb'
 			function c() {  // 새로운 변수 테이블 a 생성
-				console.log(b); // 2  -  undefined
+				console.log(a); // 2  -  undefined
 				(function () {  // 즉시 실행함수
 					console.log(a); // 3 - undefined
 					a = 'ccc'; // 이제서야 대입
