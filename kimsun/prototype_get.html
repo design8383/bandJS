@@ -37,7 +37,7 @@
 		hyun.getName(); // 'HYUN'
 
 		// 한번더 hyun.name 삭제하면?
-        delete hyun.name;
+        delete hyun.name;  // hyun은 new Programmer() 참조
         hyun.getName(); // 'HYUN'  ** undefined가 출력되는 것은 아니다. p객체의 속성을 삭제 한것이 아니기 때문이다.
 	</script>
 

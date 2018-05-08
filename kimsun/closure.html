@@ -11,27 +11,9 @@
 		dt{margin-top:10px;font-weight:bold}
 	</style>
 	<script>
-	function closure(start) {
-		return function count() {
-			return {
-			    inc: function () {
-				    start++;
-                },
-                get: function () {
-	              return start;
-                }
-			}
-        }
-    }
-    var f1 = closure(0);
-	var f2 = f1;
-	var f3 = closure(0);
-	</script>
-
-	<script>
         var x = 1;
         function innerF() {
-	        return 1 + x; // x = 1 (어휘적 유효 범위로 정의 된것)
+	        return 1 + x; // x = 1
         }
         function outterF() {
 	        var x = 2;
