@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>책보고 느낀것 기록</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script>
+		// 변수 할달 시점
+        var a = 10;
+        var b = a; // b 는 var a = 10 시점에서 b에 a를 복사하여 10이 할당.
+        a = 30;  // a 는 변수 a 에 영향을 미친다. b가 a에 할당 시점과 다르다~
+        console.log('a = ' + a +' , b = ' + b ); // a = 30 , b = 10
+
+		// 전치 연산, 후치 연산
+		/*
+		++a // 전치로 결과 값이 증가후 할당하여 같음.
+		a++ // 후치로 결과 값이 할당 한것과 증가 한것이 다름.
+		전치 : 연산 후에 할당~
+		후치 : 할당후~~ 연산
+		결과 같이 다르다.
+		 */
+	</script>
+	<script>
+		// callback
+
+        // 로직 처리부분을 분리하여 구현해 본다. - 유연해진다
+        function add3(num1, num2, print){
+            var result = num1 + num2;
+            print(result);
+        }
+        function printKor(){
+            console.log("정답 :" + result);
+        }
+        function printEng(){
+            console.log("Answer :" + result);
+        }
+        add(10, 3, printKor);
+        add(100, 3, printEng);
+
+        // 콜백함수 : 처리 부분이 구현 부분과 분리되어야 하는 경우나 처리 부분을 다양하게 만든 후 실행 시에 연결해서 사용하는 경우 적합  적합
+        function sum2(num1, num2, callback) {
+            var temp = num1 + num2;
+            callback(temp);
+        }
+        function result2(value) {
+            console.log("두수의 합은 =" + value + " 입니다");
+        }
+        sum2(100, 20, result2);
+	</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -62,6 +62,23 @@
 <h1>promise</h1>
 <p>비동기화 콜백함수를 알아야한다.</p>
 <h2>가급적 에러 처리는 catch()로 한다.</h2>
+<dl>
+	<dt>매개변수</dt>
+	<dd>resolve : 성공</dd>
+	<dd>reject : 거부되었을때</dd>
+</dl>
+<dl>
+	<dt>상태</dt>
+	<dd>보유됨(pending) : 처리되거나 거부되지 않음.</dd>
+	<dd>처리됨(fulfilled) : 프라미스 성공</dd>
+	<dd>거부됨(rejected) : 실패</dd>
+	<dd>결됨(settled) : 처리되거나 거부</dd>
+</dl>
+<dl>
+	<dt>메서드</dt>
+	<dd>.then : 완료시 실행</dd>
+	<dd>.catch : 거부시 실행</dd>
+</dl>
 <a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/">참고</a>
 </body>
 </html>
