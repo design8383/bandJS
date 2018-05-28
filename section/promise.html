@@ -10,31 +10,45 @@
 		h2{margin:15px 0 10px;font-size:15px}
 		dt{margin-top:10px;font-weight:bold}
 	</style>
+	<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
 	<script>
-        aa : function() {
-            var pp = $.Deferred();  // 비동기 준비
+        //Promise 선언
+        var _promise = function (param) {
 
-            setTimeout(function() {
-                pp.resolve(3);  // pp의 프로미스가 완료되면~~
-                alert(2);  // 3번째로 2출력
-            }, 1000);
+            return new Promise(function (resolve, reject) {
 
-            return pp;  // pp.promise() 랑 같음.
-        },
+                // 비동기를 표현하기 위해 setTimeout 함수를 사용
+                window.setTimeout(function () {
 
-        bb : function() {
-            var promise = this.aa();
+                    // 파라메터가 참이면,
+                    if (param) {
 
-            promise.then(function(ccc) {  // ccc 는 프모미스 완료된 3을 받아옴.
-                alert(ccc);  // 1번째로 3출력
+                        // 해결됨
+                        resolve("해결 완료");
+                    }
 
-                return $.Deferred().resolve(6);
-            })
-            .then(function(kk) {  // bb() 를 리던 받아 프로미스 완료된 6을 kk에 넣는다.
-                alert(kk); // 2번째로 6출력
-            })
-        }
-        bb();
+                    // 파라메터가 거짓이면,
+                    else {
+
+                        // 실패
+                        reject(Error("실패!!"));
+                    }
+                }, 1000);
+            });
+        };
+
+        //Promise 실행
+        _promise(true)  // 파라미터가 있으면 resolve, 없으면 reject
+            .then(function (text) {
+                // 성공시
+                console.log(text);
+            }, function (error) {
+                // 실패시
+                console.error(error);
+            });
 	</script>
 
 	<script>
@@ -61,58 +75,600 @@
 <body>
 <h1>promise</h1>
 <p>Promise는 비동기 조작의 최종 완료 또는 실패를 나타내는 객체입니다.</p>
+<strong>catch 와 reject 차이 : reject, resolve, promise 등은 상태를 만든다. then, catch 은 상태를 받는다. then()의 두번째 파라메터는 catch랑 동일하다.</strong>
+<h2>promise 상태</h2>
+<dl>
+	<dt>pending : 보류됨</dt>
+	<dd>아직 약속을 수행 중인 상태 (fulfilled 혹은 reject가 되기전) </dd>
+	<dt>fulfilled : 처리됨</dt>
+	<dd>약속이 성공한 상태</dd>
+	<dt>rejected : 실패</dt>
+	<dd>약속이 실패된 상태</dd>
+	<dt>pending : 보류됨</dt>
+	<dd>약속이 처리되거나 거부되지 않은 상태</dd>
+	<dt>settled : 해결됨</dt>
+	<dd>약속이 성공 또는 실패 등 결론이 난 생태</dd>
+</dl>
+<a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/">참고</a>
+<a href="https://steelkiwi.com/blog/asynchronous-javascript-programming-promises/">참고</a>
+
+
+<script>
+    //Promise 선언
+    var _promise = function (param) {
+
+        return new Promise(function (resolve, reject) {
+
+            // 비동기를 표현하기 위해 setTimeout 함수를 사용
+            window.setTimeout(function () {
+
+                // 파라메터가 참이면,
+                if (param) {
+
+                    // 해결됨
+                    resolve("해결 완료");
+                }
+
+                // 파라메터가 거짓이면,
+                else {
+
+                    // 실패
+                    reject(Error("실패!!"));
+                }
+            }, 1000);
+        });
+    };
+
+    //Promise 실행
+    _promise(true)  // 파라미터가 있으면 resolve, 없으면 reject
+        .then(function (text) {
+            // 성공시
+            console.log(text);
+        }, function (error) {
+            // 실패시
+            console.error(error);
+        });
+</script>
+<p>위 예제에서 new Promise로 Promise가 생성되는 직후부터 resolve나 reject가 호출되기 전까지의 순간을 pending 상태라고 볼 수 있다.
+이후 비동기 작업이 마친뒤 결과물을 약속대로 잘 줄 수 있다면 첫번째 파라메터로 주입되는 resolve 함수를 호출하고, 실패했다면 두번째 파마메터로 주입되는 reject 함수를 호출한다는것이 promise의 주요 개념이다.
+</p>
+<p>실행예제를 보면 then API는 첫번째 파라메터에는 성공시 호출할 함수를, 두번째 파라메터에는 실패시 호출항 함수를 선언하면 상태에 따라 동작한다.</p>
+<a href="http://programmingsummaries.tistory.com/325">참고</a>
+
 
 <h2>methods</h2>
+<script>
+	// 성공시
+    var p1 = Promise.resolve(3);
+    var p2 = 1337;
+    var p3 = new Promise(function(resolve, reject) {
+        setTimeout(resolve, 100, "foo");
+    });
+
+    Promise.all([p1, p2, p3]).then(function(values) {
+        console.log(values); // [3, 1337, "foo"]
+    });
+
+    // 실패시
+    var p1 = Promise.resolve(3);
+    var p2 = null;
+    var p3 = new Promise(function(resolve, reject) {
+        reject(Error("실패!!"));
+        setTimeout(resolve, 200, "foo");
+    });
+
+    Promise.all([p1, p2, p3]).then(function(values) {
+        console.log(values);
+    }, function(error){console.log(error)}); // Error: 실패!!
+</script>
 <dl>
-	<dt>promise.all()</dt>
+	<dt>promise.all(func1, func2 [,funcN])</dt>
 	<dd>전달된 promise 중 하나라도 rejected 되면 .all은 다른 promise가 남았는지 여부에 관계없이 다른 모든 promise를 버리고 문제가 되는 값과 함께 reject한다.</dd>
 	<dd>배열 내의 모든 값이 resolve할 때까지 기다린다.</dd>
 	<dd>하나라도 reject되면 즉시 거절한다. 즉 4개의 promise를 가지고 있고 그중 하나만 reject 되면 즉시 거절.</dd>
 </dl>
+
+
+<script>
+    var promise = new Promise(function(resolve, reject) {
+        resolve('Success');
+    });
+
+    promise.then(function(value) {
+        console.log(value); // "Success!"
+        throw 'oh, no!'; // 에러발생
+    }).catch(function(e) {
+        console.log(e); // "oh, no!"
+    }).then(function(){
+        console.log('after a catch the chain is restored');
+    }, function () {
+        console.log('Not fired due to the catch');
+    });
+
+    // 다음은 위와 동일하게 행동
+    promise.then(function(value) {
+        console.log(value); // "Success!"
+        return Promise.reject('oh, no!');
+    }).catch(function(e) {
+        console.log(e); // "oh, no!"
+    }).then(function(){
+        console.log('after a catch the chain is restored');
+    }, function () { // 첫번째 에러를 catch했기 때문에 3번째 then에서 에러가 발생하지 않아 이 구문은 실행되지 않는다.
+        console.log('Not fired due to the catch');
+    });
+
+    // 다음은 위와 동일하게 행동
+    promise.then(function(value) {
+        console.log(value); // "Success!"
+        return Promise.reject('oh, no!');
+    }).then(function(){
+        console.log('after a catch the chain is restored');
+    }, function () {
+        console.log('Not fired due to the catch'); // 첫번째 레러는 여기에서 처리한다.
+    });
+
+
+    /*
+    var Promise = require('promise');
+    var asyncfunction1 = function(param){
+        return new Promise(function(resolved,rejected){
+            setTimeout(
+                function(){
+                    console.log('func1');
+                    resolved('func 1 success:'+param+'\n');
+                },500);
+        });
+    };
+
+    var asyncfunction2 = function(param){
+        return new Promise(function(resolved,rejected){
+            setTimeout(
+                function(){
+                    console.log('func2');
+                    rejected(new Error('func 2 error:'+param+'\n'));
+                },500);
+        });
+    };
+
+    var asyncfunction3 = function(param){
+        return new Promise(function(resolved,rejected){
+            setTimeout(
+                function(){
+                    console.log('func3');
+                    resolved('func 3 success:'+param+'\n');
+                },500);
+        });
+    };
+
+    var asyncfunction4 = function(param){
+        return new Promise(function(resolved,rejected){
+            setTimeout(
+                function(){
+                    console.log('func4');
+                    rejected(Error('func 4 error:'+param+'\n'));
+                },500);
+        });
+    };
+
+    var asyncfunction5 = function(param){
+        return new Promise(function(resolved,rejected){
+            setTimeout(
+                function(){
+                    console.log('func5');
+                    resolved('func 5 success:'+param+'\n');
+                },500);
+        });
+    };
+
+    var promise = asyncfunction1(' terry ');
+    promise
+        .then(asyncfunction2)
+        .then(asyncfunction3)
+        .catch(console.error) // errorhandler1
+        .then(asyncfunction4)
+        .then(asyncfunction5)
+        .catch(console.error)  // errorhandler2
+        .then(console.log);*/
+
+    // catch 사용 이유 : promise는 비동기 콜백 내에 발상한 오류를 잡을 수 없어서 가급적 에러 처리는 catch()로 한다.
+    var promise1 = new Promise(function(resolve, reject) {
+        throw 'Uh-oh!';
+    });
+
+    promise1.catch(function(e) {
+        console.log(e); // "Uh-oh!"
+    });
+
+
+    var promise2 = new Promise(function(resolve, reject) {
+        setTimeout(function() { // 스텍에서 벗어나서 다른 플로우가 되어버림.
+            throw 'Uncaught Exception!';
+        }, 1000);
+    });
+
+    promise2.catch(function(e) {
+        console.log(e); // 이는 전혀 호출되지 않음
+    });
+</script>
 <dl>
-	<dt>promise.catch()</dt>
+	<dt>promise.catch() - 오류 처리</dt>
 	<dd>promise 반환하여 거부된 경우만 실행.</dd>
 	<dd>거부 이유는 파라미터로 제공</dd>
 	<dd>promise는 비동기 콜백 내에 발상한 오류를 잡을 수 없어서 가급적 에러 처리는 catch()로 한다.</dd>
+	<dd>중요한점은 catch 는 에러처리 후에 다시 원래 제어 흐름으로 복귀를 한다. </dd>
+	<dd>실제 흐름 : 2번, 4번에서 에러를 냈다. asyncfunction2 에서 에러가 났지만 catch()이후의 실행인 asyncfunction4가 catch 이후 실행된다.</dd>
 </dl>
+<a href="http://bcho.tistory.com/1086">참고</a>
+
+
+<script>
+	// 가령 성공하던 실패하던 로딩을 끝낼때.
+    var isLoading = true;
+
+    fetch(myRequest).then(function(response) {
+        var contentType = response.headers.get("content-type");
+        if(contentType && contentType.includes("application/json")) {
+            return response.json();
+        }
+        throw new TypeError("Oops, we haven't got JSON!");
+    })
+    .then(function(json) { /* process your JSON further */ })
+    .catch(function(error) { console.log(error); })
+    .finally(function() { isLoading = false; });
+</script>
 <dl>
 	<dt>promise.finally()</dt>
 	<dd>promise 반환하여 성공여부와 상관없이 무조건 한번은 실행된다.</dd>
 	<dd>promise는 비동기 콜백 내에 발상한 오류를 잡을 수 없어서 가급적 에러 처리는 catch()로 한다.</dd>
 	<dd>이것은 then(), catch() 핸들러에서 코드 중복을 피하게 한다.</dd>
+	<dd>finally 콜백은 어떠한 인수도 전달받지 않습니다, 왜냐하면 promise가 이행되었는지 또는 거부되었는지를 판단할 수 없기 때문입니다.
+		promise의 왜 거부되었는지 또는 이행되었을때 반환되는 값이 필요하지 않거나 제공할 필요가 없을 때 활용합니다.</dd>
+	<dd>Promise.reject(3).then() 와 달리 Promise.reject(3).finally()은 3을 반환한다.</dd>
 </dl>
+
+
+<script>
+	// 기본사용법
+    var promise1 = new Promise(function(resolve, reject) {
+        resolve("Success!");
+        // 또는
+        // reject ("Error!");
+    });
+
+    promise1.then(function(value) {
+        console.log(value); // 성공!
+    }, function(reason) {
+        console.log(reason); // 오류이유!
+    });
+
+	// Chaining
+    var promise2 = new Promise(function(resolve, reject) {
+        resolve(1);
+    });
+
+    promise2.then(function(value) {
+        console.log(value); // 1
+        return value + 1;
+    }).then(function(value) {
+        console.log(value); // 2
+    });
+
+    promise2.then(function(value) {
+        console.log(value); // 1
+    });
+</script>
 <dl>
 	<dt>promise.then()</dt>
 	<dd>promise 를 반환하고 두개의 콜백 함수를 인수로 받는다.</dd>
 	<dd>첫번째 파마리터는 수행값, 두번째 파라미터는 거부 이유</dd>
 	<dd>then, catch 메서드는 promise를 리턴 하기때문에 chaining이 가능하다.</dd>
 </dl>
+
+
+<script>
+	// promiseResolve1 호출되지 않음
+    var promiseResolve1 = new Promise(function(resolve, reject) {
+        setTimeout(resolve, 500, "one");
+    });
+    var promiseResolve2 = new Promise(function(resolve, reject) {
+        setTimeout(resolve, 100, "two");
+    });
+
+    Promise.race([promiseResolve1, promiseResolve2]).then(function(value) {
+        console.log(value); // "two"
+        // promiseResolve2가 더 빠름
+    });
+
+    // promiseResolve3 이 호출되고 promiseReject은 호출되지 않기때문에 reject 가 실행되지 않음.
+    var promiseResolve3 = new Promise(function(resolve, reject) {
+        setTimeout(resolve, 100, "three");
+    });
+    var promiseReject1 = new Promise(function(resolve, reject) {
+        setTimeout(reject, 500, "four");
+    });
+
+    Promise.race([promiseResolve3, promiseReject1]).then(function(value) {
+        console.log(value); // "three"
+        // promiseResolve3이 더 빠르기에 결정함
+    }, function(reason) {
+        // 호출되지 않음
+    });
+
+	// promiseReject2가 호출되고 then의 첫번째 성공이 아닌 실패 두번째 파라메터가 실행된다.
+    var promiseResolve4 = new Promise(function(resolve, reject) {
+        setTimeout(resolve, 500, "five");
+    });
+    var promiseReject2 = new Promise(function(resolve, reject) {
+        setTimeout(reject, 100, "six");
+    });
+
+    Promise.race([promiseResolve4, promiseReject2]).then(function(value) {
+        // 호출되지 않음
+    }, function(reason) {
+        console.log(reason); // "six"
+        // promiseReject2이 더 빠르기에 거부함
+    });
+</script>
 <dl>
 	<dt>promise.race()</dt>
 	<dd>promise 를 반환하고 race 함수는 최초 통과 처리한 프로미스와 같은 식으로 처리되는 Promise를 반환합니다. 결정(resolve) 또는 거부합니다, 어느 쪽이 먼저 일어나든.</dd>
 	<dd>성공 또는 실패 둘중에 1개가 먼저 응답이 오면 다른 1개는 호출되지 않는다.</dd>
 </dl>
+
+
+<script>
+    Promise.reject("Testing static reject").then(function(reason) {
+        // 호출되지 않음
+    }, function(reason) {
+        console.log(reason); // "Testing static reject"
+    });
+
+    Promise.reject(new Error("fail")).then(function(error) {
+        // 호출되지 않음
+    }, function(error) {
+        console.log(error); // Error: fail
+    });
+</script>
 <dl>
 	<dt>promise.reject()</dt>
 	<dd>promise 를 반환하고 오류를 잡기 위해 사용.</dd>
-	<dd>파마리터를(reason) instanceof Error 에 유용</dd>
+	<dd>파마리터를(reason : 이유) instanceof Error 에 유용</dd>
 	<dd>성공 또는 실패 둘중에 1개가 먼저 응답이 오면 다른 1개는 호출되지 않는다.</dd>
 </dl>
+
+
+
+<script>
+	//정적 Promise.resolve 메서드 사용
+    Promise.resolve("Success").then(function(value) {
+        console.log(value); // "Success"
+    }, function(value) {
+        // 호출되지 않음
+    });
+
+    // 배열 결정
+    var promise = Promise.resolve([1,2,3]);
+    promise.then(function(resolve) {
+        console.log(resolve[0]); // 1
+    });
+
+    // 또 다른 Promise 결정
+    var original = Promise.resolve(true);
+    var cast = Promise.resolve(original);
+    cast.then(function(resolve) {
+        console.log(resolve); // true
+    });
+
+
+    // thenable 결정 및 오류 발생
+    // thenable 객체 결정
+    var promise1 = Promise.resolve({
+        then: function(onFulfill, onReject) { onFulfill("fulfilled!"); }
+    });
+    console.log(promise1 instanceof Promise); // true, 객체는 Promise로 변환함
+	// instanceof 연산자는 object 의 프로토타입 체인에 constructor.prototype 이 존재하는지 테스트 합니다.
+
+    promise1.then(function(resolve) {
+        console.log(resolve); // "fulfilled!"
+    }, function(e) {
+        // 호출되지 않음
+    });
+
+
+    // thenable이 콜백 전에 오류 던짐
+    // 프로미스 거부
+    var thenable = new Promise(function(resolve, reject) {
+        throw new TypeError("Throwing");
+        resolve('Success');
+    });
+
+    var promise2 = Promise.resolve(thenable);
+    promise2.then(function(resolve) {
+        // 호출되지 않음
+        console.log(resolve);
+    }).catch( function(error) {
+        console.log(error); // TypeError: Throwing
+    });
+
+
+    // thenable이 콜백 후에 오류 던짐
+    // 프로미스 결정
+    var thenable = { then: function(resolve) {
+            resolve("Resolving");
+            throw new TypeError("Throwing");
+        }};
+
+    var promise3 = Promise.resolve(thenable);
+    promise3.then(function(resolve) {
+        console.log(resolve); // "Resolving"
+    }, function(error) {
+        // 호출되지 않음
+        console.log(error);
+    });
+</script>
 <dl>
 	<dt>promise.resolve()</dt>
-	<dd>promise.then 객체를 반환</dd>
+	<dd>리턴 값 : Argument로 넘어온 값(value)으로 resolved된 Promise. 또는 value가 Promise객체일 경우, 그 Promise객체 자체</dd>
 </dl>
+
+
 
 <h1>jQuery Deferred Object</h1>
 <p>jQuery Deferred는 각각의 비동기식 처리에 Promise 객체를 연계하여 그 상태를 전파하는 것으로 promise를 구현한 jQuery 객체이다. 브라우저 호환성과 편의성을 고려하여 만든 Promise 모듈이라고 생각하면 무리가 없을 듯하다.</p>
 
 <h2>Deferred</h2>
+<p>Deferred() 여러 콜백을 콜백 대기열에 등록하고, 콜백 대기열을 호출하고, 동기 또는 비동기 함수의 성공 또는 실패 상태를 중계하는 메소드로 체인 가능 유틸리티 객체를 반환하는 팩토리 함수입니다.</p>
+<p>성공시 done(), 실패시 fail(), 성공 여부 상관 없이 행동이 끝나면 always가 호출된다.</p>
+
+<p>
+	fail, done : 무조건 몇번이고 실행. return 실행하지 않음.
+	catch : 이후 fail 있다면 수행하지 않고 그 다음 구문 실행(then, done 등 이동). return 실행
+</p>
+
+
+<script>
+    var longAndComplicatedFunction = function() {
+        var deferred = $.Deferred();
+        try {
+            // 완료되려면 50초가 걸리는 매우 복잡한 비동기 코드
+            deferred.resolve('성공');
+        } catch (err) {
+            deferred.reject(err);
+        }
+        return deferred.promise();
+    };
+    longAndComplicatedFunction().done(function(message) {
+        console.log(message); // '성공'
+    }).fail(function(error) {
+        console.log(error);
+    }).always(function() {
+        console.log('완료!');  // '완료!'
+    });
+    console.log('다음 행동');  // '다음 행동'
+</script>
+<dl>
+	<dt>always()</dt>
+	<dd>성공 여부 상관 없이 행동이 끝나면 always가 호출된다.</dd>
+</dl>
+
+
+
+<script>
+    // es6 promise.catch()와 동일
+</script>
+<dl>
+	<dt>catch() - 오류 처리</dt>
+	<dd>promise 반환하여 거부된 경우만 실행.</dd>
+	<dd>거부 이유는 파라미터로 제공</dd>
+	<dd>promise는 비동기 콜백 내에 발상한 오류를 잡을 수 없어서 가급적 에러 처리는 catch()로 한다.</dd>
+</dl>
+
+
+<script>
+    // 3 functions to call when the Deferred object is resolved
+    function fn1() {
+        $( "p" ).append( " 1 " );
+    }
+    function fn2() {
+        $( "p" ).append( " 2 " );
+    }
+    function fn3( n ) {
+        $( "p" ).append( n + " 3 " + n );
+    }
+
+    // Create a deferred object
+    var deferred = $.Deferred();
+
+    // Add handlers to be called when dfd is resolved
+    deferred
+    // .done() can take any number of functions or arrays of functions
+    // 첫번째 배열을 실행하고 두번째 함수 시점에서 resolve가 실행되어서 결과가 출력됨.
+        .done( [ fn1, fn2 ], fn3, [ fn2, fn1 ] )
+        // We can chain done methods, too
+        .done(function( n ) {
+            $( "p" ).append( n + " we're done." );
+        });
+
+    // Resolve the Deferred object when the button is clicked
+    $( "button" ).on( "click", function() {
+        deferred.resolve( "and" );
+    });
+    // Ready... 1 2 and 3 and 2 1 and we're done.
+</script>
+<button>Go</button>
+<p>Ready...</p>
+<dl>
+	<dt>done() - 성공</dt>
+	<dd>하나 이상의 인수를 허용. 인수는 단일 또는 배열</dd>
+</dl>
+
+
+
+<script>
+    $.get( "test.php" )
+        .done(function() {
+            console.log( "$.get succeeded" );
+        })
+        .fail(function() {
+            console.log( "$.get failed!" );
+        });
+</script>
+<dl>
+	<dt>fail() - 오류 처리</dt>
+	<dd>promise 반환하여 거부된 경우만 실행.</dd>
+	<dd>거부 이유는 파라미터로 제공</dd>
+	<dd>하나 이상의 인수를 허용. 인수는 단일 또는 배열</dd>
+</dl>
+
+
+<p>
+	이렇게 셋트로 표현할수 있는거 같다.
+	resolve - reject - nptify
+	done - fail - progress
+	resolveWith - rejectWith - notifyWith  (context를 변경할수 있다. bind와 같이 this를 변경할 수 있다. 호출 시점에 바꿀수 있는것이 bind와 다르다.)
+</p>
+
+<script>
+    function doSomething() {
+        var dfd = $.Deferred();
+        var count = 0;
+        var intervalId = setInterval(function() {
+            dfd.notify(count++);
+            count > 3 && clearInterval(intervalId);
+        }, 500);
+        return dfd.promise();
+    };
+
+    var promise = doSomething();
+
+    promise.progress(function(i) { // notify(count++); 의 값을 받음.
+        $("#progress").text(i);
+    });
+</script>
+<div id="progress"></div>
+<dl>
+	<dt>progress() - 진행율 알림</dt>
+	<dd>deferred가 notify 또는 notifyWith 를 호출하여 진행 알림을 생성하면 progressCallbacks가 호출됩니다.</dd>
+	<dd>deferred 객체를 반환하므로 체인 연결이 가능.</dd>
+	<dd>하나 이상의 인수를 허용. 인수는 단일 또는 배열</dd>
+</dl>
+
+
+
+<script>
+
+</script>
+<dl>
+	<dt>notify() - 오류 처리</dt>
+	<dd>Deferred 객체의 progressCallback을 지정된 객체로 호출합니다.</dd>
+	<dd>거부 이유는 파라미터로 제공</dd>
+	<dd>하나 이상의 인수를 허용. 인수는 단일 또는 배열</dd>
+</dl>
+
+
 <ul>
-	<li>Deferred() 여러 콜백을 콜백 대기열에 등록하고, 콜백 대기열을 호출하고, 동기 또는 비동기 함수의 성공 또는 실패 상태를 중계하는 메소드로 체인 가능 유틸리티 객체를 반환하는 팩토리 함수입니다.</li>
-	<li>
-		성공시 done(), 실패시 fail() 담고있다.
-	</li>
-	<li>then()은 성공, 실패의 콜백함수를 한번에 기술할 수 있다.</li>
+
+
 	<li>$.when() 복수의 비동기 처리를 병렬로 처리할 수 있다. 하나라도 실패하면 reject 반환한다.</li>
 	<li>progress() 진행률 알림.</li>
 	<li>.promise 는 deferred의 promise 반환</li>
@@ -127,3 +683,11 @@
 상태 변화 설명, 안티 패턴등 패턴 설명
 https://medium.com/witinweb/%EB%B2%88%EC%97%AD-promise-patterns-anti-patterns-4065d8c26e89
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
+
+---------------------------------
+정훈님 의견 : promise를 이해하려면 chaining 과 async를 알아야한다.
+
+// 동일한 요소에 여러번 함수를 연결해서 실행한다.
+- 코드를 짧고 쉽게 관리할수있다
+- 더 나은 성능 제공
+chaining $("#p1").css("color", "red").slideUp(2000).slideDown(2000);
