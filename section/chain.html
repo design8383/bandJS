@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>underscore _.chain()</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
+	<script>
+		// 배열 100 까지 만들기 위함.
+		var array = [];
+		var i = 0;
+        while (i++<100){
+            array.push(i);
+        }
+        console.log(array);
+
+        // 짝수만 고르기(filter)
+        var evens = _.filter(array, function (num) {
+	       return num % 2 == 0;
+        });
+        console.log(evens);
+
+		// 짝수 고른거에서 +1 증가 (map)
+		var evensAdd = _.map(evens, function (num) {
+			return num + 1;
+        });
+        console.log(evensAdd);
+
+		// 위 +1 증가시킨 결과물에서 뒤에서 20개를 찾는다 (last)
+		var lastArray1 = _.last(evensAdd, 20);
+        console.log(lastArray1);
+
+
+
+
+		// 뒤에서 20개 고르기
+        var lastArray2 = _.last(array, 20);
+        console.log(lastArray2);
+
+		// 그 중에서 홀수만 고르기
+        var odd = _.filter(lastArray2, function (num) {
+            return num % 2 != 0;
+        });
+        console.log(odd);
+
+		// +1하기
+        var oddAdd = _.map(odd, function (num) {
+            return num + 1;
+        });
+        console.log(oddAdd);
+
+
+
+		// 위 내용을 체인으로
+		var evensChain = _.chain(array)
+	        // 짝수만 고르기(filter)
+	        .filter(function (num) {
+	            return num % 2 == 0;
+	        })
+
+	        // 짝수 고른거에서 +1 증가 (map)
+	        .map(function (num) {
+	            return num + 1;
+	        })
+
+	        // 위 +1 증가시킨 결과물에서 뒤에서 20개를 찾는다 (last)
+	        .last(20);
+        console.log(evensChain);
+
+        var oddChain = _.chain(array)
+		.last(20)
+        .filter(function (num) {
+            return num % 2 != 0;
+        })
+        .map(function (num) {
+            return num + 1;
+        });
+        console.log(oddChain);
+	</script>
+</head>
+<body>
+
+</body>
+</html>
