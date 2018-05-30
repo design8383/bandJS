@@ -17,11 +17,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
 	<script>
 		// 배열 100 까지 만들기 위함.
-		var array = [];
-		var i = 0;
-        while (i++<100){
-            array.push(i);
-        }
+		var array = _.range(100);
         console.log(array);
 
         // 짝수만 고르기(filter)
@@ -74,7 +70,8 @@
 	        })
 
 	        // 위 +1 증가시킨 결과물에서 뒤에서 20개를 찾는다 (last)
-	        .last(20);
+	        .last(20)
+            .value(); // chain 은 value를 해야지 값이 나온다.
         console.log(evensChain);
 
         var oddChain = _.chain(array)
@@ -84,7 +81,8 @@
         })
         .map(function (num) {
             return num + 1;
-        });
+        })
+        .value();
         console.log(oddChain);
 	</script>
 </head>

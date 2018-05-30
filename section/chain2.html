@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>.chain()</title>
+    <style>
+        body{font-size:13px}
+        h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+        h1{font-size:17px}
+        h2{margin:15px 0 10px;font-size:15px}
+        dt{margin-top:10px;font-weight:bold}
+    </style>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
+    <script>
+
+
+        function somethingVerySlow() {
+        }
+
+        // 일정 만들기
+        function createSchedule() {
+            return {}
+        }
+
+        // 제목
+        function setName(schedule, name) {
+            schedule['name'] = name;
+            somethingVerySlow();
+        }
+
+        // 상세 내용
+        function setDescription(schedule, description){
+            schedule['description'] = description;
+            somethingVerySlow();
+        }
+        // 시작 시각
+        function setStartAt(schedule, startAt){
+            schedule['start_at'] = startAt;
+            somethingVerySlow();
+        }
+
+        // 종료 시각
+        function setEndAt(schedule, endAt) {
+            schedule['end_at'] = endAt;
+            somethingVerySlow();
+        }
+        // 새 미리 알림 추가
+        // 지정한 미리 알림 제거
+        // 미리 알림 전체 제거
+        // 반복 여부
+        function setRepeat(schedule, repeat){
+            schedule['repeat'] = repeat;
+            somethingVerySlow();
+        }
+
+
+
+        function createScheduleChain() {
+            var schedule = {};
+
+            var container = {
+                setName : function(name) {
+                    schedule['name'] = name;
+                    return container;
+                },
+
+                value : function() {
+
+                    return schedule;
+                },
+
+                setEndAt : function(endAt){
+                    schedule['end_at'] = endAt;
+                    return container; // chain은 container 반환
+                },
+
+                setDescription : function(description){
+                    schedule['description'] = description;
+                    return container;
+                },
+
+                setRepeat: function(repeat){
+                    schedule['repeat'] = repeat;
+                    return container;
+                },
+
+                setStartAt: function(startAt){
+                    schedule['start_at'] = startAt;
+                    return container;
+                }
+            };
+            return container; // chain은 container 반환
+
+        }
+
+
+
+        // 사용자 코드
+
+        // no chain test
+        var test1schedule = createSchedule();
+        setName(test1schedule, '운동');
+        setEndAt(test1schedule, '2018-05-29 16:30');
+        setDescription(test1schedule, '오늘 하루도 고생하셨습니다.');
+        setRepeat(test1schedule, '2d');
+        setStartAt(test1schedule, '2018-05-29 15:00');
+        somethingVerySlow();
+
+        console.log('no chain', test1schedule);
+        // test1schedule 사용하기
+
+        // chain test
+        var schedule1 = createScheduleChain()
+            .setName('운동')
+            .setEndAt('2018-05-30')
+            .setDescription('오늘이 chain 마지막수업')
+            .setRepeat('2d')
+            .setStartAt('2018-05-29')
+            .value();
+
+        // schedule1 사용하기
+
+        console.log('chain', schedule1);
+        // .setName('운동')
+        // .setEndAt('2018-05-29')
+        // .setDescription('오늘 하루도고생')
+        // .setRepeat('2d')
+        // .setStartAt('2018-05-29')
+        // .value();
+
+
+    </script>
+</head>
+<body>
+chain 은 .value()할때 결과를 받는다.
+chain은 부모의 컨테이너를 리턴한다.
+chain 은 성능향상을 위해 사용한다. (나중에 라이브럴리 제공자가 변경 내용을 우리가 사용할때 성능에 영향이 있다.)
+
+</body>
+</html>
+
+
+
+
