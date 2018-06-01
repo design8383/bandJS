@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>try, catch, finally / throw</title>
+	<style>
+		body{font-size:13px}
+		h1,h2,h3,h4,h5,div,p,dt,dd{padding:0;margin:0}
+		h1{font-size:17px}
+		h2{margin:15px 0 10px;font-size:15px}
+		dt{margin-top:10px;font-weight:bold}
+	</style>
+	<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
+	<script>
+        try {
+            /**
+             * 정상이라면 이 코드는 아무런 문제없이 블록의 시작부터 끝까지 실행된다.
+             * 하지만 경우에 따라 예외가 발생할 수 있다.
+             * 예외는 throw 문에 의해 직접적으로 발생할 수도 있고,
+             * 또는 예외를 발생시키는 메서드의 호출에 의해 발생할 수도 있다.
+             */
+        } catch (e) {
+            /**
+             * 이 블록 내부의 문장들은 오직 try 블록에서 예외가 발생할 경우에만 실행된다.
+             * 이 문장들에선 지역 변수 e를 사용하여 Error 객체 또는 앞에서 던진 다른 값을 참조할 수 있다.
+             * 이 블록에서는 어떻게든 그 예외를 처리할 수도 있고,
+             * 그냥 아무것도 하지 않고 예외를 무시할 수도 있고,
+             * 아니면 throw 를 사용해서 예외를 다시 발생시킬 수도 있다.
+             */
+        } finally {
+            /**
+             * 이 블록에는 try 블록에서 일어난 일에 관계없이 무조건 실행될 코드가 위치한다.
+             * 이 코드는 try 블록이 어떻게든 종료되면 실행된다.
+             * try 블록이 종료되는 상황은 다음과 같다.
+             *   1) 정상적으로 블록의 끝에 도달했을 때
+             *   2) break, continue 또는 return 문에 의해서
+             *   3) 예외가 발생했지만 catch 절에서 처리했을 때
+             *   4) 예외가 발생했고 그것이 잡히지 않은 채 퍼져나갈 때
+             */
+        }
+
+
+        try {  //문은 코드블록의 오류를 테스트할 수 있다.
+            alert(webis);
+            // webis 변수명이 선언되지 않아 에러가 날 것이 확실함
+
+            /**
+             * throw 예외(exception)는 JavaScript String, Number, Boolean 또는 Object 일 수 있다.
+             */
+            throw 'error'; //문은 사용자 지정 오류를 생성할 수 있다. (기술적 용어 : JavaScript 가 error를 throw 했다.고 표현한다.)
+        } catch(error) { // 문은 오류가 발생하면, 실행될 코드 블록을 정의
+            // catch구문은 에러가 발생시 해당 내용을 실행함
+            test = error.message;
+        }
+	</script>
+
+
+	<div id="message">111</div><div id="demo">2222</div>
+	<script>
+		// 예는 입력 변수 값을 try 문을 통해 검사한다.
+        function myFunction() {
+            var message, x;
+            message = document.getElementById("message");
+            message.innerHTML = "";
+            x = document.getElementById("demo").value;
+            try {
+                // 각종 예외 발생 문.
+                if(x == "") throw "empty";
+                if(isNaN(x)) throw "not a number";
+                x = Number(x);
+                if(x < 5) throw "too low";
+                if(x > 10) throw "too high";
+            }
+            catch(err) {
+                message.innerHTML = "Input is " + err;
+            }
+        }
+        myFunction();
+        //Input is not a number
+        //2222
+	</script>
+</head>
+<body>
+만약 위 try{} 안에 위치한 함수에서 어떤 에러가 발생하면 catch에 있는 함수를 실행하게하며 catch 구문에서 발생한 에러에 대한 정보를 객체를 생성하여 저장합니다. 그리고 이에 대한 정보는 error.message 프로퍼티를 통해 확인할 수 있습니다. 위 함수를 실행하면 다음과 같이 출력됩니다.
+참고로 finally{} 구문을 아래에 추가할 수도 있습니다. 이는 옵션사항으로 에러발생의 유무에 상관없이 항상 실행되는 구문입니다.
+참고로 이와 함께 사용할 수 있는 throw 연산자도 알아두면 좋습니다. try catch 구문은 throw 연산자와도 함께 많이 사용되는데 throw 연산자는 try catch 구문에서 에러가 발생하면 나타낼 catch구문의 에러를 커스텀 에러로 반환하게 해줍니다. 이를 통해 브라우저에서 발생한 에러와 try catch 구문을 통해 발생한 에러를 구분하게 해주는 매우 유용한 역활을 합니다.
+</body>
+</html>
