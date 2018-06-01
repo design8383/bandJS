@@ -83,6 +83,52 @@
         //Input is not a number
         //2222
 	</script>
+
+
+
+    <script>
+
+     var p1, p2, p3;
+
+    function checkIsLengthThree(p1) {
+        try {
+            if (!isLengthThree(p1)) {
+                throw 1;  // throw 는 catch 또는 그상위 catch에게 전달한다.
+            }
+        } catch (e) {
+
+        }
+    }
+
+     try {
+        checkIsLengthThree(p1);
+
+         if (isNaN(p1)) {
+             throw 2;
+         }
+
+         if (!isLengthFour(p2)) {
+             throw 3;
+         }
+
+         modalLayer('정상적으로 입력되었습니다.');
+
+     }
+     catch(e) {
+        if (e === 1) {
+            modalLayer('휴대폰 번호가 잘못 입력되었습니다.');
+        } else if (e == 2) {
+            modalLayer('휴대폰 번호가 잘못 입력되었습니다.');
+        }
+
+
+        if (e === 1 && e === 2 && e === 3) {
+            throw new Error();
+        }
+     } finally {
+         closeModalLayer();
+     }
+    </script>
 </head>
 <body>
 만약 위 try{} 안에 위치한 함수에서 어떤 에러가 발생하면 catch에 있는 함수를 실행하게하며 catch 구문에서 발생한 에러에 대한 정보를 객체를 생성하여 저장합니다. 그리고 이에 대한 정보는 error.message 프로퍼티를 통해 확인할 수 있습니다. 위 함수를 실행하면 다음과 같이 출력됩니다.
