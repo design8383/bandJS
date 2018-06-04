@@ -87,8 +87,7 @@
 
 
     <script>
-
-     var p1, p2, p3;
+    var p1, p2, p3;
 
     function checkIsLengthThree(p1) {
         try {
@@ -100,35 +99,136 @@
         }
     }
 
-     try {
-        checkIsLengthThree(p1);
+	try {
+		checkIsLengthThree(p1);
 
-         if (isNaN(p1)) {
-             throw 2;
-         }
+		if (isNaN(p1)) {
+			throw 2;
+		}
 
-         if (!isLengthFour(p2)) {
-             throw 3;
-         }
+		if (!isLengthFour(p2)) {
+			throw 3;
+		}
+		modalLayer('정상적으로 입력되었습니다.');
 
-         modalLayer('정상적으로 입력되었습니다.');
-
-     }
-     catch(e) {
+	}
+	catch(e) {
         if (e === 1) {
             modalLayer('휴대폰 번호가 잘못 입력되었습니다.');
         } else if (e == 2) {
             modalLayer('휴대폰 번호가 잘못 입력되었습니다.');
         }
 
-
         if (e === 1 && e === 2 && e === 3) {
             throw new Error();
         }
-     } finally {
-         closeModalLayer();
-     }
+	} finally {
+		closeModalLayer();
+	}
     </script>
+
+	<script>
+    /**
+     * if 로만 작성
+     */
+
+	// 숫자만체크
+	function checkNumberType(phoneNumber1, phoneNumber2, phoneNumber3) {
+        if(!(isNaN(phoneNumber1) && isNaN(phoneNumber2) && isNaN(phoneNumber3))){ // isNaN는 숫자이면 false
+            return true;
+        }
+    }
+	// 3 자리수 체크
+    function checkLengthThree(phoneNumber1) {
+        if(phoneNumber1.length === 3){
+            return true;
+        }
+    }
+    // 4 자리수 체크
+    function checkLengthTFour(phoneNumber2, phoneNumber3) {
+        if(phoneNumber2.length === 4 && phoneNumber3.length === 4){
+            return true;
+        }
+    }
+
+    function errorMessage() {
+	    alert("핸드폰 번호 입력을 다시하세요~");
+    }
+
+    function successMessage() {
+        alert("핸드폰 인증 완료되었습니다~");
+    }
+
+    $("#submit").click(function() {
+        var phoneNumber1 = $('#phoneNumber1').val();
+        var phoneNumber2 = $('#phoneNumber2').val();
+        var phoneNumber3 = $('#phoneNumber3').val();
+
+        if(checkNumberType(phoneNumber1, phoneNumber2, phoneNumber3)
+	        && checkLengthThree(phoneNumber1)
+	        && checkLengthTFour(phoneNumber2, phoneNumber3)){
+            successMessage();
+        } else{
+            errorMessage();
+        }
+    });
+	</script>
+
+	<script>
+    /**
+     * try, catch 로 작성
+     */
+
+    // 숫자만체크
+    function checkNumberType(phoneNumber1, phoneNumber2, phoneNumber3) {
+        if(!(isNaN(phoneNumber1) && isNaN(phoneNumber2) && isNaN(phoneNumber3))){ // isNaN는 숫자이면 false
+            return true;
+        }
+    }
+    // 3 자리수 체크
+    function checkLengthThree(phoneNumber1) {
+        if(phoneNumber1.length === 3){
+            return true;
+        }
+    }
+    // 4 자리수 체크
+    function checkLengthTFour(phoneNumber2, phoneNumber3) {
+        if(phoneNumber2.length === 4 && phoneNumber3.length === 4){
+            return true;
+        }
+    }
+
+    function errorMessage() {
+        alert("핸드폰 번호 입력을 다시하세요~");
+    }
+
+    function successMessage() {
+        alert("핸드폰 인증 완료되었습니다~");
+    }
+
+    $("#submit").click(function() {
+        try{
+            var phoneNumber1 = $('#phoneNumber1').val();
+            var phoneNumber2 = $('#phoneNumber2').val();
+            var phoneNumber3 = $('#phoneNumber3').val();
+
+            if(!(checkNumberType(phoneNumber1, phoneNumber2, phoneNumber3)
+                && checkLengthThree(phoneNumber1)
+                && checkLengthTFour(phoneNumber2, phoneNumber3))){
+                throw new Error('핸드폰 번호 입력을 다시하세요~');
+            }
+        }
+        catch(error){
+            alert(error);
+        }
+        finally {
+            alert('좋은 하루되세요')
+        }
+    });
+	</script>
+	<h1>가입할 휴대폰 번호를 입력하세요</h1>
+	<input id="phoneNumber1" value="asd"> - <input id="phoneNumber2" value="6845"> - <input id="phoneNumber3" value="">
+	<input type="submit" id="submit">
 </head>
 <body>
 만약 위 try{} 안에 위치한 함수에서 어떤 에러가 발생하면 catch에 있는 함수를 실행하게하며 catch 구문에서 발생한 에러에 대한 정보를 객체를 생성하여 저장합니다. 그리고 이에 대한 정보는 error.message 프로퍼티를 통해 확인할 수 있습니다. 위 함수를 실행하면 다음과 같이 출력됩니다.
