@@ -94,7 +94,10 @@
             if (!isLengthThree(p1)) {
                 throw 1;  // throw 는 catch 또는 그상위 catch에게 전달한다.
             }
-        } catch (e) {
+        } catch(e){
+            throw e; // isLengthThree() 가 없어서 문법에러를 상위로 에러를 발생
+        }
+        finally {  // 무조건 1번은 실행한다.
 
         }
     }
@@ -199,7 +202,7 @@
     }
 
     function errorMessage() {
-        alert("핸드폰 번호 입력을 다시하세요~");
+        return "핸드폰 번호 입력을 다시하세요~";
     }
 
     function successMessage() {
@@ -215,8 +218,9 @@
             if(!(checkNumberType(phoneNumber1, phoneNumber2, phoneNumber3)
                 && checkLengthThree(phoneNumber1)
                 && checkLengthTFour(phoneNumber2, phoneNumber3))){
-                throw new Error('핸드폰 번호 입력을 다시하세요~');
+                throw new Error(errorMessage());
             }
+            successMessage();
         }
         catch(error){
             alert(error);
