@@ -530,7 +530,6 @@
     var longAndComplicatedFunction = function() {
         var deferred = $.Deferred();
         try {
-            // 완료되려면 50초가 걸리는 매우 복잡한 비동기 코드
             deferred.resolve('성공');
         } catch (err) {
             deferred.reject(err);
@@ -599,9 +598,11 @@
 <p>Ready...</p>
 <dl>
 	<dt>done() - 성공</dt>
-	<dd>하나 이상의 인수를 허용. 인수는 단일 또는 배열</dd>
+	<dd>deferred.done () 메서드 하나 이상의 인수를 허용. 인수는 단일 또는 함수 배열일 수 있다. deferred가 resolved 되면
+	doneCallbacks가 호출된다. Callbacks은 추가 된 순서대로 실행된다. deferred.done()은
+	deferred object를 반환하므로 .done() 메소드를 포함하여 deferred object의 다른 메소드를 이 객체에 chain 할 수 있다.
+	Deferred가 resolved 되면, doneCallback는 resolve 또는 resolveWith 메소드 호출에 제공된 인수를 추가 된 순서대로 사용하여 실행된다.</dd>
 </dl>
-
 
 
 <script>
@@ -610,20 +611,21 @@
             console.log( "$.get succeeded" );
         })
         .fail(function() {
-            console.log( "$.get failed!" );
+            console.log( "$.get failed!" ); // 실행
         });
 </script>
 <dl>
-	<dt>fail() - 오류 처리</dt>
-	<dd>promise 반환하여 거부된 경우만 실행.</dd>
-	<dd>거부 이유는 파라미터로 제공</dd>
-	<dd>하나 이상의 인수를 허용. 인수는 단일 또는 배열</dd>
+	<dt>fail() - </dt>
+	<dd>deferred.fail () 메서드 하나 이상의 인수를 허용. 인수는 단일 또는 함수 배열일 수 있다.
+		deferred가 거부되면 failCallbacks가 호출된다. 콜백은 추가 된 순서대로 실행된다. deferred.fail()은
+		deferred object를 반환하므로 .fail() 메소드를 포함하여 deferred object의 다른 메소드를 이 객체에 chain 할 수 있다.
+		Deferred가 resolved 되면, doneCallback는 deferred.reject() 또는  deferred.rejectWith() 메소드 호출에 제공된 인수를 추가 된 순서대로 사용하여 실행된다.
+	</dd>
 </dl>
-
 
 <p>
 	이렇게 셋트로 표현할수 있는거 같다.
-	resolve - reject - nptify
+	resolve - reject - notify
 	done - fail - progress
 	resolveWith - rejectWith - notifyWith  (context를 변경할수 있다. bind와 같이 this를 변경할 수 있다. 호출 시점에 바꿀수 있는것이 bind와 다르다.)
 </p>
